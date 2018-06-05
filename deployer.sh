@@ -4,7 +4,7 @@ RELEASES_PATH=./releases
 NUM_KEPT_RELEASES=5
 
 init() {
-  mkdir $RELEASES_PATH
+  mkdir -p $RELEASES_PATH
 }
 
 list_releases() {
