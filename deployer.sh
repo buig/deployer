@@ -52,7 +52,7 @@ new_release() {
   mkdir $RELEASES_PATH/$currdate
   cp $1 $RELEASES_PATH/$currdate
   cd $RELEASES_PATH/$currdate
-  unzip $1
+  unzip -q $1
   rm $1
 }
 
