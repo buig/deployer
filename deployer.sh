@@ -48,7 +48,7 @@ clean_old_releases() {
 }
 
 new_release() {
-  local currdate=`date '+%Y%m%d%H%M%S'`
+  local currdate=`date '+%Y%m%d_%H%M%S'`
   mkdir $RELEASES_PATH/$currdate
   cp $1 $RELEASES_PATH/$currdate
   cd $RELEASES_PATH/$currdate
