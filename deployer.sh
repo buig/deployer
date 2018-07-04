@@ -52,7 +52,18 @@ new_release() {
   mkdir $RELEASES_PATH/$currdate
   cp $1 $RELEASES_PATH/$currdate
   cd $RELEASES_PATH/$currdate
-  unzip -q $1
+  if [ ${1: -4} == ".zip" ]
+  then
+    unzip -q $1
+  fi
+  if [ ${1: -4} == ".bz2" ]
+  then
+    tar -xjf $1
+  fi
+  if [ ${1: -3} == ".gz" ]
+  then
+    tar -xzf $1
+  fi
   rm $1
 }
 
