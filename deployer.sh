@@ -16,21 +16,31 @@ current_release() {
   echo "${current##*/}"
 }
 
-last_release() {
+latest_release() {
   echo `ls -1r $RELEASES_PATH | head -n 1`
 }
 
-previous_to_last_release() {
+previous_to_latest_release() {
   echo `ls -1r $RELEASES_PATH | head -n 2 | tail -n 1`
 }
 
+nth_last_release() {
+  local nth_last_release=$1
+  if [ -z "$nth_last_release" ]
+  then
+    nth_last_release=1
+  fi
+  nth_last_release=$((nth_last_release+1))
+  echo `ls -1r $RELEASES_PATH | head -n $nth_last_release | tail -n 1`
+}
+
 deploy() {
-  release=$(last_release)
+  release=$(latest_release)
   ln -sfn $RELEASES_PATH/$release current
 }
 
 rollback() {
-  release=$(previous_to_last_release)
+  release=$(nth_last_release $1)
   ln -sfn $RELEASES_PATH/$release current  
 }
 
@@ -68,7 +78,7 @@ new_release() {
 }
 
 run() {
-  cd $RELEASES_PATH/$(last_release)
+  cd $RELEASES_PATH/$(latest_release)
   $@
 }
 
@@ -77,11 +87,11 @@ while test $# -ne 0; do
   case $arg in
     init) init; exit ;;
     list) list_releases; exit ;;
-    last) last_release; exit ;;
-    prev|previous) previous_to_last_release; exit ;;
+    last) latest_release; exit ;;
+    prev|previous) previous_to_latest_release; exit ;;
     curr|current) current_release; exit ;;
     dep|deploy) deploy; exit ;;
-    rollback) rollback; exit ;;
+    rollback) rollback $1; exit ;;
     clean) clean_old_releases; exit ;;
     rel|release) new_release $1; exit ;;
     run) run $@; exit ;;
