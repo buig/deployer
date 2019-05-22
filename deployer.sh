@@ -82,6 +82,14 @@ run() {
   $@
 }
 
+create_env() {
+  release=$(latest_release)
+  cd $RELEASES_PATH/$release
+  virtualenv -p python3.6 venv
+  ./venv/bin/pip3 install django
+  ./venv/bin/pip3 install -r requirements.txt
+}
+
 while test $# -ne 0; do
   arg=$1; shift
   case $arg in
@@ -95,6 +103,7 @@ while test $# -ne 0; do
     clean) clean_old_releases; exit ;;
     rel|release) new_release $1; exit ;;
     run) run $@; exit ;;
+    venv) create_env; exit ;;
     *)
   esac
 done
